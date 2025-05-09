@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Comida di Buteco - Restaurantes BH</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #f9f9f9;
+      margin: 0;
+      padding: 20px;
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 30px;
+      color: #333;
+    }
+
+    .container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 20px;
+    }
+
+    .card {
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .card img {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+    }
+
+    .card-body {
+      padding: 15px;
+    }
+
+    .card-body h2 {
+      font-size: 18px;
+      margin: 0 0 10px;
+      color: #2c3e50;
+    }
+
+    .card-body p {
+      margin: 5px 0;
+      font-size: 14px;
+      color: #555;
+    }
+
+    .avaliacao {
+      font-weight: bold;
+      color: #e67e22;
+    }
+
+    .link {
+      margin-top: 10px;
+      display: inline-block;
+      background: #3498db;
+      color: white;
+      padding: 8px 12px;
+      border-radius: 6px;
+      text-decoration: none;
+    }
+
+    .link:hover {
+      background: #2980b9;
+    }
+  </style>
+</head>
+<body>
+  <h1>🍻 Comida di Buteco - BH</h1>
+  <div class="container" id="cards"></div>
+
+  <script>
+    const dados = [
+  {
+    "nome": "Bar Bendita Baderna",
+    "link": "https://comidadibuteco.com.br/buteco/bar-bendita-baderna/",
+    "prato": "PARABÉNS CDB Coxinhas recheadas para todos os gostos, massa de abóbora com recheio de frango com quiabo, massa de mandioca com recheio de carne de lata (suína) e massa de beterraba com recheio de alho-poró com queijo canastra.",
+    "imagem": "https://cdb-static-files.s3.amazonaws.com/wp-content/uploads/2025/03/19142754/benditabaderna_parabenscdb_bh_2025_rodneycosta_unibh-8203-scaled.jpg",
+    "endereco": "Rua Silva Fortes, 47 | União, Belo Horizonte - MG",
+    "regiao": "Nordeste",
+    "bairro": "União",
+    "nota": 4.9,
+    "quantidade_avaliacoes": 148
+  },
+  {
+    "nome": "Bar do Nelson",
+    "link": "https://comidadibuteco.com.br/buteco/bar-do-nelson/",
+    "prato": "Bolinho de prata Bolinho de feijoada na cama de couve crispy.",
+    "imagem": "https://cdb-static-files.s3.amazonaws.com/wp-content/uploads/2025/03/19145234/bardonelson_bolinhodeprata_bh_2025_amandacantanhede_unibh-9036-scaled.jpg",
+    "endereco": "Avenida Vicente Risola, 1000 | Santa Inês, Belo Horizonte - MG",
+    "regiao": "Leste",
+    "bairro": "Santa Ines",
+    "nota": 4.5,
+    "quantidade_avaliacoes": 659
+  },
+  {
+    "nome": "Bar do Primo",
+    "link": "https://comidadibuteco.com.br/buteco/bar-do-primo/",
+    "prato": "Custelinha di Buteco Costelinha com batata e queijo ao molho branco.",
+    "imagem": "https://cdb-static-files.s3.amazonaws.com/wp-content/uploads/2025/03/19145355/primo_costelinhadebuteco_bh_2025_isaquerodrigues_unibh-8526-scaled.jpg",
+    "endereco": "Avenida Amazonas, 4649 | Nova Suíça, Belo Horizonte - MG",
+    "regiao": "Centro-Sul",
+    "bairro": "Centro",
+    "nota": 4.6,
+    "quantidade_avaliacoes": 192
+  },
+  {
+    "nome": "Bar dos Meninos",
+    "link": "https://comidadibuteco.com.br/buteco/bar-dos-meninos/",
+    "prato": "Bodas de prata Costelinha suína, marinada em vinho tinto, servida com mostarda em folhas, acompanhada de creme de batata.",
+    "imagem": "https://cdb-static-files.s3.amazonaws.com/wp-content/uploads/2025/03/19145725/bardosmeninos_bodasdeprata_bh_2025_rodneycosta_unibh-8218-scaled.jpg",
+    "endereco": "Rua Lindolfo Deodoro, 503 | Salgado Filho, Belo Horizonte - MG",
+    "regiao": "Oeste",
+    "bairro": "Salgado Filho",
+    "nota": 4.7,
+    "quantidade_avaliacoes": 72
+  },
+  {
+    "nome": "Bar e Restaurante Bom Sabor",
+    "link": "https://comidadibuteco.com.br/buteco/bar-e-restaurante-bom-sabor/",
+    "prato": "Bora Comemorar Fraldinha de boi recheada com carne moída de porco, bacon e muçarela, assado na churrasqueira. Acompanhado de farofa e vinagrete.",
+    "imagem": "https://cdb-static-files.s3.amazonaws.com/wp-content/uploads/2025/03/24070354/restbomsabor_boracomemorar_bh_2025_amandacantanhede_unibh-9066-scaled.jpg",
+    "endereco": "Rua Java, 386 | Nova Suíça, Belo Horizonte - MG",
+    "regiao": "Oeste",
+    "bairro": "Nova Suíça",
+    "nota": 4.5,
+    "quantidade_avaliacoes": 211
+  },
+  {
+    "nome": "Bar Junto Juntinho",
+    "link": "https://comidadibuteco.com.br/buteco/bar-junto-juntinho/",
+    "prato": "Poliamor Culinário Costelinha de porco combinada com um purê de mandioca feito com manteiga de garrafa e queijo parmesão, acompanhado de couve crispy e geleia de abacaxi apimentada.",
+    "imagem": "https://cdb-static-files.s3.amazonaws.com/wp-content/uploads/2025/03/10075811/barjuntojuntinho_poliamorculinario_bh_2025_rodneycosta_unibh-1725-1-1-scaled.jpg",
+    "endereco": "Rua Cura D’Ars, 542 | Prado, Belo Horizonte - MG",
+    "regiao": "Oeste",
+    "bairro": "Prado",
+    "nota": 4.7,
+    "quantidade_avaliacoes": 138
+  },
+  {
+    "nome": "Bar Mania Mineira",
+    "link": "https://comidadibuteco.com.br/buteco/5668-revision-v1/",
+    "prato": "Explosão de Sabor Bolinho de mandioca recheado com queijo.",
+    "imagem": "https://cdb-static-files.s3.amazonaws.com/wp-content/uploads/2025/03/15050748/maniamineira_explosaodesabores_bh_2025_fernandaoliveira_unibh-8088-scaled.jpg",
+    "endereco": "Rua Paracatu, 1099 | Santo Agostinho, Belo Horizonte - MG",
+    "regiao": "Centro-Sul",
+    "bairro": "Santo Agostinho",
+    "nota": 4.5,
+    "quantidade_avaliacoes": 1012
+  },
+  {
+    "nome": "Bar Temático Sta. Teresa",
+    "link": "https://comidadibuteco.com.br/buteco/bar-tematico-sta-teresa-2/",
+    "prato": "#CDB - 25 anos de sucesso - Arrumado Carne de sol, feijão-de-corda, farofa e vinagrete e manteiga de garrafa.",
+    "imagem": "https://cdb-static-files.s3.amazonaws.com/wp-content/uploads/2025/03/15050630/tematico_cdb_25desucessoarrumado_bh_2025_rodneycosta_unibh-9084-scaled.jpg",
+    "endereco": "Rua Pirite, 187 | Santa Teresa, Belo Horizonte - MG",
+    "regiao": "Leste",
+    "bairro": "Santa Tereza",
+    "nota": 4.3,
+    "quantidade_avaliacoes": 1468
+  },
+  {
+    "nome": "Beco Restaurante",
+    "link": "https://comidadibuteco.com.br/buteco/beco-restaurante/",
+    "prato": "Lá di Casa Carne bovina cozida na panela de pressão e reduzida no molho à base demi glace. Acompanha nosso creme de mandioca caseira, farofa crocante de panko e crispy de couve.",
+    "imagem": "https://cdb-static-files.s3.amazonaws.com/wp-content/uploads/2025/03/19150511/becorestaurante_ladicasa_bh_2025_fernandaoliveira_unibh-8137-scaled.jpg",
+    "endereco": "Rua Tamoios, 232 | Centro, Belo Horizonte - MG",
+    "regiao": "Centro-Sul",
+    "bairro": "Centro",
+    "nota": 4.3,
+    "quantidade_avaliacoes": 1872
+  },
+  {
+    "nome": "Benjamin Bar",
+    "link": "https://comidadibuteco.com.br/buteco/benjamin-bar/",
+    "prato": "Boizinho no milharal Costela bovina regada no molho roti, acompanhada de quirera de milho com queijo canastra meia cura e milho verde cozido.",
+    "imagem": "https://cdb-static-files.s3.amazonaws.com/wp-content/uploads/2025/03/15050454/benjamin_boizimnomilharal_bh_2025_isaquerodrigues_unibh-7748-scaled.jpg",
+    "endereco": "Rua Coronel José Benjamim, 770 | Padre Eustáquio, Belo Horizonte - MG",
+    "regiao": "Noroeste",
+    "bairro": "Padre Eustáquio",
+    "nota": 4.4,
+    "quantidade_avaliacoes": 249
+  },
+  {
+    "nome": "Botequim Buritis",
+    "link": "https://comidadibuteco.com.br/buteco/botequim-buritis/",
+    "prato": "Butequeiro 25 Lombinho suíno na lata, acompanhado de mandioquinha frita ao molho cremoso raiz.",
+    "imagem": "https://cdb-static-files.s3.amazonaws.com/wp-content/uploads/2025/03/15050402/botequimburitis_butequeiro_bh_2025_isaquerodrigues_unibh-7665-scaled.jpg",
+    "endereco": "Rua Vitório Magnavaca, 39 | Buritis, Belo Horizonte - MG",
+    "regiao": "Oeste",
+    "bairro": "Estoril",
+    "nota": 4.2,
+    "quantidade_avaliacoes": 1485
+  },
+  {
+    "nome": "Botequim de Lourdes",
+    "link": "https://comidadibuteco.com.br/buteco/botequim-de-lurdes/",
+    "prato": "Rocambole de Torresmo que só no Botequim tem Torresmo de barriga marinado na cachaça, servido com palitinhos de tapioca e geleia de abacaxi com pimenta e canela.",
+    "imagem": "https://cdb-static-files.s3.amazonaws.com/wp-content/uploads/2025/03/19150737/butequimlourdes_rocamboledetorresmoquesoobutequimtem_bh_2025_rodneycosta_unibh-9228-scaled.jpg",
+    "endereco": "Rua Curitiba, 2039 | Lourdes, Belo Horizonte - MG",
+    "regiao": "Centro-Sul",
+    "bairro": "Lourdes",
+    "nota": 4.3,
+    "quantidade_avaliacoes": 1415
+  },
+  {
+    "nome": "Café Bahia",
+    "link": "https://comidadibuteco.com.br/buteco/3147-revision-v1/",
+    "prato": "Trupiquei no Bahia Defumados de porco e carne de sol no feijão-vermelho, pelinha crocante, polentinha mineira e mostarda refogada.",
+    "imagem": "https://cdb-static-files.s3.amazonaws.com/wp-content/uploads/2025/03/15050158/cafebahia_trupiqueinobahia_bh_2025_amandacantanhede_unibh-9006-scaled.jpg",
+    "endereco": "Rua Tupis, 369 | Centro, Belo Horizonte - MG",
+    "regiao": "Centro-Sul",
+    "bairro": "Centro",
+    "nota": 4.4,
+    "quantidade_avaliacoes": 2110
+  },
+  {
+    "nome": "Camisola Bar",
+    "link": "https://comidadibuteco.com.br/buteco/camisola-bar/",
+    "prato": "Costela Mineira Costela de boi cozida na cerveja preta, acompanhada com um purê de mandioca com queijo.",
+    "imagem": "https://cdb-static-files.s3.amazonaws.com/wp-content/uploads/2025/03/19151142/camisola_costelamineira_bh_2025_rodneycosta_unibh-7449-scaled.jpg",
+    "endereco": "Rua Luther King, 242 | Cidade Nova, Belo Horizonte - MG",
+    "regiao": "Nordeste",
+    "bairro": "Cidade Nova",
+    "nota": 4.4,
+    "quantidade_avaliacoes": 62
+  },
+  {
+    "nome": "Canela Amarela",
+    "link": "https://comidadibuteco.com.br/buteco/canela-amarela/",
+    "prato": "Bola na Rede Almôndegas bovinas sobre a cama de creme de queijos, acompanhadas de torradas de pão de alho e finalizada com tomatinho e manjericão. Acompanha molho da casa.",
+    "imagem": "https://cdb-static-files.s3.amazonaws.com/wp-content/uploads/2025/03/19151248/canelaamarela_bolanarede_bh_2025_isaquerodrigues_unibh-9287-scaled.jpg",
+    "endereco": "Praça Leonardo Gutierrez, 195 | Gutierrez, Belo Horizonte - MG",
+    "regiao": "Oeste",
+    "bairro": "Gutierrez",
+    "nota": 4.1,
+    "quantidade_avaliacoes": 518
+  },
+  {
+    "nome": "Cantina Arte Quintal",
+    "link": "https://comidadibuteco.com.br/buteco/cantina-arte-quintal/",
+    "prato": "Fraldinha Assada na Cachaça e Cerveja Fraldinha assada flambada na cachaça e cerveja com calda de maracujá, farofa de alho-poró e banana frita curtida ao bacon.",
+    "imagem": "https://cdb-static-files.s3.amazonaws.com/wp-content/uploads/2025/03/19151606/cantinaartequinta_fraudinhaacachacaecerveja_bh_2025_isaquerodrigues_unibh-7690-scaled.jpg",
+    "endereco": "Rua Realengo, 150 | Caiçara, Belo Horizonte - MG",
+    "regiao": "Oeste",
+    "bairro": "Alto Caiçaras",
+    "nota": 4.4,
+    "quantidade_avaliacoes": 62
+  },
+  {
+    "nome": "COSMOS",
+    "link": "https://comidadibuteco.com.br/buteco/cosmos/",
+    "prato": "Meteoro - Explosão de sabores Tiras de picanha, alcatra e maminha ao molho de cerveja preta, com batata tipo chips e creme de alho.",
+    "imagem": "https://cdb-static-files.s3.amazonaws.com/wp-content/uploads/2025/03/15050033/cosmos_meteoroexplosaodesabores_bh_2025_rodneycosta_unibh-7483-scaled.jpg",
+    "endereco": "Avenida Vicente Risola, 1305 | Santa Inês, Belo Horizonte - MG",
+    "regiao": "Leste",
+    "bairro": "Santa Ines",
+    "nota": 4.6,
+    "quantidade_avaliacoes": 91
+  },
+  {
+    "nome": "Ember BBQ",
+    "link": "https://comidadibuteco.com.br/buteco/ember-bbq/",
+    "prato": "Cupim Sertanejo Cupim defumado em lenha de macieira. Servido sobre angu de milho verde com queijo minas, acompanhado de couve crispy e pimenta jalapeño.",
+    "imagem": "https://cdb-static-files.s3.amazonaws.com/wp-content/uploads/2025/03/15045825/embeer_cupimsertanejo_bh_2025_isaquerodrigues_unibh-7851-scaled.jpg",
+    "endereco": "Rua São Romão, 460 | São Pedro, Belo Horizonte - MG",
+    "regiao": "Centro-Sul",
+    "bairro": "Santo Antônio",
+    "nota": 4.1,
+    "quantidade_avaliacoes": 158
+  },
+  {
+    "nome": "Espettinho.com",
+    "link": "https://comidadibuteco.com.br/buteco/espetinho-com/",
+    "prato": "Mineirinho Gratinado 2.5 Almôndegas suínas gratinadas com molho de tomate caseiro e muçarela. Acompanha 1 Espetinho de ‘Sacanagem’ e um licor de doce de leite de entrada.",
+    "imagem": "https://cdb-static-files.s3.amazonaws.com/wp-content/uploads/2025/03/19153114/espettinhocom_mineirimgratinado_bh_2025_rodneycosta_unibh-9129-scaled.jpg",
+    "endereco": "Rua Eli Seabra Filho, 510 | Buritis, Belo Horizonte - MG",
+    "regiao": "Oeste",
+    "bairro": "Palmeiras",
+    "nota": 4,
+    "quantidade_avaliacoes": 355
+  },
+  {
+    "nome": "Geraldin da Cida",
+    "link": "https://comidadibuteco.com.br/buteco/geraldin-da-cida/",
+    "prato": "Sô mineiro, uai! Alcatra com farofa de jiló com bacon. Acompanha uma sobremesa de doce de leite com castanha e bacon.",
+    "imagem": "https://cdb-static-files.s3.amazonaws.com/wp-content/uploads/2025/03/19153406/geraldimdacida_soumineirouai_bh_2025_rodneycosta_unibh-8364-scaled.jpg",
+    "endereco": "Rua Contria, 1459 | Grajaú, Belo Horizonte - MG",
+    "regiao": "Oeste",
+    "bairro": "Grajaú",
+    "nota": 4.6,
+    "quantidade_avaliacoes": 455
+  },
+  {
+    "nome": "Iracema Bar",
+    "link": "https://comidadibuteco.com.br/buteco/iracema-bar/",
+    "prato": "Harumaki de Carne de Panela Harumaki, também conhecido como rolinho primavera, recheado com uma carne de panela cozida com especiarias. Servido com um molho agridoce e picante.",
+    "imagem": "https://cdb-static-files.s3.amazonaws.com/wp-content/uploads/2025/03/19153541/iracema_harumakidecarnedepanela_bh_2025_fernandaoliveira_unibh-8240-scaled.jpg",
+    "endereco": "Rua Almandina, 56 | Santa Teresa, Belo Horizonte - MG",
+    "regiao": "Leste",
+    "bairro": "Santa Tereza",
+    "nota": 4.3,
+    "quantidade_avaliacoes": 991
+  },
+  {
+    "nome": "Locomotiva’s Bar",
+    "link": "https://comidadibuteco.com.br/buteco/locomotivas-bar-2/",
+    "prato": "CUPIM: Embriagado e trouxa Trouxinha recheada com cupim marinado na cachaça e queijo canastra, acompanha maionese de alho.",
+    "imagem": "https://cdb-static-files.s3.amazonaws.com/wp-content/uploads/2025/03/15045235/locomotivasbar_cumpimembreagadoetrouxa_bh_2025_amandacantanhede_unibh-8315-scaled.jpg",
+    "endereco": "Rua Carmésia, 568 | Santa Inês, Belo Horizonte - MG",
+    "regiao": "Oeste",
+    "bairro": "Santa Ines",
+    "nota": 4.5,
+    "quantidade_avaliacoes": 117
+  },
+  {
+    "nome": "Mamute Bar",
+    "link": "https://comidadibuteco.com.br/buteco/mamute-gastrobar/",
+    "prato": "C Tá de Parabéns! Bife rolê recheado com cenoura e carne de linguiça acompanhado de batata sauté, couve crispy e farofa da vovó.",
+    "imagem": "https://cdb-static-files.s3.amazonaws.com/wp-content/uploads/2025/03/19154240/mamute_ctadeparabens_bh_2025_mylenaizis_unibh-8079-scaled.jpg",
+    "endereco": "Rua Brás Cubas, 116 | Cruzeiro, Belo Horizonte - MG",
+    "regiao": "Centro-Sul",
+    "bairro": "Anchieta",
+    "nota": 4.3,
+    "quantidade_avaliacoes": 129
+  },
+  {
+    "nome": "Oratório Bar",
+    "link": "https://comidadibuteco.com.br/buteco/oratorio-bar/",
+    "prato": "Costela de Adão Costelinha de porco assada, finalizada com molho barbecue e guarnecida em cama de farofa crocante, acompanhada de uma maçã caramelizada.",
+    "imagem": "https://cdb-static-files.s3.amazonaws.com/wp-content/uploads/2025/03/19155430/oratoriobar_costeladeadao_bh_2025_amandacantanhede_unibh-8929-scaled.jpg",
+    "endereco": "Avenida Brasil, 161 | Santa Efigênia, Belo Horizonte - MG",
+    "regiao": "Centro-Sul",
+    "bairro": "Santa Efigênia",
+    "nota": 4.3,
+    "quantidade_avaliacoes": 2115
+  },
+  {
+    "nome": "Pé de Goiaba",
+    "link": "https://comidadibuteco.com.br/buteco/3179-revision-v1/",
+    "prato": "Bodas de Prata - 25 ANOS JUNTOS Lombo com queijo ao molho de abacaxi picante, farofa de bacon, torresminho à pururuca e couve.",
+    "imagem": "https://cdb-static-files.s3.amazonaws.com/wp-content/uploads/2025/03/15044957/pedegoiaba_bodasdeprata_bh_2025_isaquerodrigues_unibh-8633-scaled.jpg",
+    "endereco": "Avenida Amazonas, 4676 | Nova Suíssa, Belo Horizonte - MG",
+    "regiao": "Centro-Sul",
+    "bairro": "Centro",
+    "nota": 4.7,
+    "quantidade_avaliacoes": 1172
+  },
+  {
+    "nome": "Quitandas da Tia Nice Bar",
+    "link": "https://comidadibuteco.com.br/buteco/quitandas-da-tia-nice-bar/",
+    "prato": "QUÊ SÉ QUÉ! Disco de carne recheada com provolone, acompanhado de molhos especiais da casa e cachaça artesanal.",
+    "imagem": "https://cdb-static-files.s3.amazonaws.com/wp-content/uploads/2025/03/15044911/quitandatianice_queceque_bh_2025_rodneycosta_unibh-7389-scaled.jpg",
+    "endereco": "Rua Alabastro, 146 | Sagrada Família, Belo Horizonte - MG",
+    "regiao": "Leste",
+    "bairro": "Sagrada Família",
+    "nota": 4.9,
+    "quantidade_avaliacoes": 14
+  },
+  {
+    "nome": "Xambar",
+    "link": "https://comidadibuteco.com.br/buteco/xambar/",
+    "prato": "Mineirin Oriental Miolo de acém assado na pressão, acompanhado de mandioca cozida na manteiga e farofa de banana da terra",
+    "imagem": "https://cdb-static-files.s3.amazonaws.com/wp-content/uploads/2025/03/19172132/xambar_minerimorienta_bh_2025_isaquerodrigues_unibh-7522-scaled.jpg",
+    "endereco": "Avenida Augusto de Lima, 233 | Centro, Belo Horizonte - MG",
+    "regiao": "Centro-Sul",
+    "bairro": "Centro",
+    "nota": 4.2,
+    "quantidade_avaliacoes": 118
+  }
+]
+    const container = document.getElementById('cards');
+
+    dados.forEach(item => {
+      const card = document.createElement('div');
+      card.className = 'card';
+
+      card.innerHTML = `
+        <img src="${item.imagem}" alt="Imagem do prato de ${item.nome}">
+        <div class="card-body">
+          <h2>${item.nome}</h2>
+          <p><strong>Prato:</strong> ${item.prato}</p>
+          <p><strong>Endereço:</strong> ${item.endereco}</p>
+          <p><strong>Região:</strong> ${item.regiao} | <strong>Bairro:</strong> ${item.bairro}</p>
+          <p class="avaliacao">⭐ ${item.nota} (${item.quantidade_avaliacoes} avaliações)</p>
+          <a class="link" href="${item.link}" target="_blank">Ver mais</a>
+        </div>
+      `;
+
+      container.appendChild(card);
+    });
+  </script>
+</body>
+</html>
